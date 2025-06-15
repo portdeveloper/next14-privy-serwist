@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { useCreateWallet, useLogin, usePrivy, useSendTransaction, WalletWithMetadata } from "@privy-io/react-auth";
 import { createPublicClient, http, formatEther } from "viem";
 import { monadTestnet } from "viem/chains";
+import { QRCodeSVG } from "qrcode.react";
 
 const publicClient = createPublicClient({
   chain: monadTestnet,
@@ -152,6 +153,22 @@ export default function UseLoginPrivy() {
                   <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Address</label>
                   <div className="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg p-4 font-mono text-sm text-slate-800 dark:text-slate-200 break-all">
                     {walletAddress}
+                  </div>
+                  
+                  {/* QR Code Section */}
+                  <div className="mt-4 flex flex-col items-center">
+                    <div className="bg-white p-4 rounded-xl shadow-md">
+                      <QRCodeSVG
+                        value={walletAddress || ""}
+                        size={200}
+                        level="H"
+                        includeMargin={true}
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                      Scan to send funds to this wallet
+                    </p>
                   </div>
                 </div>
                 
