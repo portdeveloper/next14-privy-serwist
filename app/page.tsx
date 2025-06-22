@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import SendNotification from "./SendNotification";
-import { InstallPWA } from "./InstallPWA";
-import UseLoginPrivy from "./Privy";
+import SendNotification from "./components/SendNotification";
+import { InstallPWA } from "./components/InstallPWA";
+import UseLoginPrivy from "./components/UseLoginPrivy";
 
 export const metadata: Metadata = {
   title: "Home",
