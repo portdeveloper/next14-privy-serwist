@@ -15,12 +15,15 @@
     "qrcode.react": "^4.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "viem": "^2.31.2"
+    "viem": "^2.31.2",
+    "serwist": "latest",
+    "web-push": "3.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/web-push": "^3.6.4",
     "eslint": "^8",
     "eslint-config-next": "14.2.30",
     "postcss": "^8",
