@@ -1,5 +1,5 @@
 {
-  "name": "next14-privy-serwist",
+  "name": "next14-serwist",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,13 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@privy-io/react-auth": "^2.14.2",
     "@serwist/next": "^9.0.15",
     "next": "14.2.30",
     "qrcode.react": "^4.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "viem": "^2.31.2",
     "serwist": "latest",
     "web-push": "3.6.7"
   },
