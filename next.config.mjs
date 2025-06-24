@@ -8,5 +8,7 @@ const withSerwist = withSerwistInit({
 });
 
 export default withSerwist({
-  // Your Next.js config
+  images: {
+    domains: ["imagedelivery.net", "testnet.monadexplorer.com"],
+  },
 });

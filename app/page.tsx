@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import SendNotification from "./components/SendNotification";
 import { InstallPWA } from "./components/InstallPWA";
 import UseLoginPrivy from "./components/UseLoginPrivy";
+import SwapComponent from "./components/SwapComponent";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -19,7 +20,8 @@ export default function Page() {
             </h1>
           </div>
         </div>
-        
+        <SwapComponent />
+
         <div className="space-y-8">
           <SendNotification />
           <UseLoginPrivy />

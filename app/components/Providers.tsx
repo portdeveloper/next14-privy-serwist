@@ -2,8 +2,21 @@
 
 import { PrivyProvider as BasePrivyProvider } from "@privy-io/react-auth";
 import { monadTestnet } from "viem/chains";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createConfig } from "@privy-io/wagmi";
+import { http } from "wagmi";
+import { WagmiProvider } from "@privy-io/wagmi";
 
-export default function PrivyProvider({
+export const config = createConfig({
+  chains: [monadTestnet],
+  transports: {
+    [monadTestnet.id]: http(),
+  },
+});
+
+const queryClient = new QueryClient();
+
+export default function Providers({
   children,
 }: {
   children: React.ReactNode;
@@ -27,7 +40,9 @@ export default function PrivyProvider({
         supportedChains: [monadTestnet],
       }}
     >
-      {children}
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={config}>{children}</WagmiProvider>
+      </QueryClientProvider>
     </BasePrivyProvider>
   );
 }
