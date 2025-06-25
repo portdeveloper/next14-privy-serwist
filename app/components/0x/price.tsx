@@ -10,7 +10,7 @@ import {
   MIN_TRADE_AMOUNT,
 } from "@/utils/contants";
 import {
-  ExtendedPriceResponse,  
+  ExtendedPriceResponse,
   TradeDirection,
   TokenTax,
   PriceRequest,
@@ -20,13 +20,6 @@ import { useSetActiveWallet } from "@privy-io/wagmi";
 import TokenSelector from "./TokenSelector";
 import ApproveButton from "./ApproveButton";
 import { usePriceFetcher } from "./usePriceFetcher";
-
-export const DEFAULT_BUY_TOKEN = (chainId: number) => {
-  if (chainId === 1) {
-    return "weth";
-  }
-  return "usdt";
-};
 
 interface PriceViewProps {
   price: ExtendedPriceResponse | null;
@@ -60,23 +53,35 @@ export default function PriceView({
   const { address } = useAccount();
   const { setActiveWallet } = useSetActiveWallet();
 
-  const handleSellTokenChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSellToken(e.target.value);
-  }, []);
+  const handleSellTokenChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSellToken(e.target.value);
+    },
+    []
+  );
 
-  const handleBuyTokenChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setBuyToken(e.target.value);
-  }, []);
+  const handleBuyTokenChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setBuyToken(e.target.value);
+    },
+    []
+  );
 
-  const handleSellAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setTradeDirection("sell");
-    setSellAmount(e.target.value);
-  }, []);
+  const handleSellAmountChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTradeDirection("sell");
+      setSellAmount(e.target.value);
+    },
+    []
+  );
 
-  const handleBuyAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setTradeDirection("buy");
-    setBuyAmount(e.target.value);
-  }, []);
+  const handleBuyAmountChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTradeDirection("buy");
+      setBuyAmount(e.target.value);
+    },
+    []
+  );
 
   const tokensByChain = useMemo(() => {
     if (chainId === 1) {
@@ -100,26 +105,29 @@ export default function PriceView({
       : undefined;
   }, [buyAmount, tradeDirection, buyTokenObject.decimals]);
 
-  const priceRequest: PriceRequest = useMemo(() => ({
-    chainId,
-    sellToken: sellTokenObject.address,
-    buyToken: buyTokenObject.address,
-    sellAmount: parsedSellAmount,
-    buyAmount: parsedBuyAmount,
-    taker,
-    swapFeeRecipient: FEE_RECIPIENT,
-    swapFeeBps: AFFILIATE_FEE,
-    swapFeeToken: buyTokenObject.address,
-    tradeSurplusRecipient: FEE_RECIPIENT,
-  }), [
-    chainId,
-    sellTokenObject.address,
-    buyTokenObject.address,
-    parsedSellAmount,
-    parsedBuyAmount,
-    taker,
-    buyTokenObject.address,
-  ]);
+  const priceRequest: PriceRequest = useMemo(
+    () => ({
+      chainId,
+      sellToken: sellTokenObject.address,
+      buyToken: buyTokenObject.address,
+      sellAmount: parsedSellAmount,
+      buyAmount: parsedBuyAmount,
+      taker,
+      swapFeeRecipient: FEE_RECIPIENT,
+      swapFeeBps: AFFILIATE_FEE,
+      swapFeeToken: buyTokenObject.address,
+      tradeSurplusRecipient: FEE_RECIPIENT,
+    }),
+    [
+      chainId,
+      sellTokenObject.address,
+      buyTokenObject.address,
+      parsedSellAmount,
+      parsedBuyAmount,
+      taker,
+      buyTokenObject.address,
+    ]
+  );
 
   const {
     price: fetchedPrice,
@@ -127,7 +135,9 @@ export default function PriceView({
     error: priceError,
     validationErrors,
   } = usePriceFetcher({
-    enabled: sellAmount !== "" && parseFloat(sellAmount) >= parseFloat(MIN_TRADE_AMOUNT),
+    enabled:
+      sellAmount !== "" &&
+      parseFloat(sellAmount) >= parseFloat(MIN_TRADE_AMOUNT),
     request: priceRequest,
   });
 
@@ -135,7 +145,9 @@ export default function PriceView({
     if (fetchedPrice) {
       setPrice(fetchedPrice);
       if (fetchedPrice.buyAmount) {
-        setBuyAmount(formatUnits(BigInt(fetchedPrice.buyAmount), buyTokenObject.decimals));
+        setBuyAmount(
+          formatUnits(BigInt(fetchedPrice.buyAmount), buyTokenObject.decimals)
+        );
       }
       if (fetchedPrice.tokenMetadata) {
         setBuyTokenTax(fetchedPrice.tokenMetadata.buyToken);
@@ -152,7 +164,10 @@ export default function PriceView({
   const insufficientBalance = useMemo(() => {
     if (!sellTokenBalance || !sellAmount) return true;
     try {
-      return parseUnits(sellAmount, sellTokenObject.decimals) > sellTokenBalance.value;
+      return (
+        parseUnits(sellAmount, sellTokenObject.decimals) >
+        sellTokenBalance.value
+      );
     } catch {
       return true;
     }
@@ -183,7 +198,7 @@ export default function PriceView({
         <h2 className="text-blue-800 dark:text-blue-200 font-semibold mb-3">
           Connected Wallets
         </h2>
-        
+
         {walletsReady && address && (
           <div className="text-sm text-gray-700 dark:text-gray-300 mb-2">
             <span className="font-medium">Active:</span>{" "}
@@ -215,14 +230,18 @@ export default function PriceView({
 
       {priceError && (
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4 mb-4">
-          <p className="text-red-800 dark:text-red-200 font-medium">Error fetching price:</p>
+          <p className="text-red-800 dark:text-red-200 font-medium">
+            Error fetching price:
+          </p>
           <p className="text-red-700 dark:text-red-300 text-sm">{priceError}</p>
         </div>
       )}
 
       {validationErrors.length > 0 && (
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4 mb-4">
-          <p className="text-yellow-800 dark:text-yellow-200 font-medium mb-2">Validation Issues:</p>
+          <p className="text-yellow-800 dark:text-yellow-200 font-medium mb-2">
+            Validation Issues:
+          </p>
           <ul className="text-yellow-700 dark:text-yellow-300 text-sm space-y-1">
             {validationErrors.map((error, index) => (
               <li key={index}>• {error.reason}</li>
@@ -294,14 +313,18 @@ export default function PriceView({
 
           {buyTokenTax.buyTaxBps !== "0" && (
             <div className="text-gray-600 dark:text-gray-300 text-sm">
-              <span className="font-medium">{buyTokenObject.symbol} Buy Tax:</span>{" "}
+              <span className="font-medium">
+                {buyTokenObject.symbol} Buy Tax:
+              </span>{" "}
               {formatTax(buyTokenTax.buyTaxBps)}%
             </div>
           )}
-          
+
           {sellTokenTax.sellTaxBps !== "0" && (
             <div className="text-gray-600 dark:text-gray-300 text-sm">
-              <span className="font-medium">{sellTokenObject.symbol} Sell Tax:</span>{" "}
+              <span className="font-medium">
+                {sellTokenObject.symbol} Sell Tax:
+              </span>{" "}
               {formatTax(sellTokenTax.sellTaxBps)}%
             </div>
           )}
@@ -342,27 +365,14 @@ export default function PriceView({
       </div>
 
       <div className="mt-8 text-center">
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+        <a
+          href="https://0x.org/docs/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+        >
           Learn more about building with 0x
-        </p>
-        <div className="flex justify-center gap-4 text-sm">
-          <a
-            href="https://0x.org/docs/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Documentation
-          </a>
-          <a
-            href="https://github.com/0xProject/0x-examples/tree/main"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Examples
-          </a>
-        </div>
+        </a>
       </div>
     </div>
   );
