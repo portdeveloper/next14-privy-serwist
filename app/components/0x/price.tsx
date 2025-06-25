@@ -125,7 +125,6 @@ export default function PriceView({
       parsedSellAmount,
       parsedBuyAmount,
       taker,
-      buyTokenObject.address,
     ]
   );
 
