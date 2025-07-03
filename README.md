@@ -60,7 +60,7 @@ Add the following environment variables to your `.env.local` file:
 ```env
 # Privy Configuration (Required)
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
-NEXT_PUBLIC_PRIVY_CLIENT_ID=your_privy_client_id_here
+NEXT_PUBLIC_PRIVY_CLIENT_ID= # optional, you can leave this empty
 
 # Web Push Configuration (Required for notifications)
 NEXT_PUBLIC_VAPID_PUBLIC_KEY=your_vapid_public_key_here
@@ -119,24 +119,11 @@ npm run build && npm run start
 
 The app includes web push notification capabilities for user engagement and updates.
 
-## 🔧 Environment Variables Troubleshooting
+## Changing the app name
 
-### Common Configuration Issues
-
-**❌ Authentication not working:**
-- Verify `NEXT_PUBLIC_PRIVY_APP_ID` matches your Privy dashboard
-- Ensure `NEXT_PUBLIC_PRIVY_CLIENT_ID` is set (not optional)
-- Check that your domain is whitelisted in Privy settings
-
-**❌ Push notifications failing:**
-- Confirm VAPID keys are properly generated and copied
-- Verify `WEB_PUSH_EMAIL` email format: `mailto:your-email@example.com`
-- Ensure both public and private VAPID keys are set
-
-**❌ App won't start:**
-- Check all required environment variables are set
-- Restart development server after changing `.env.local`
-- Verify no extra spaces or quotes around variable values
+- Edit the `manifest.json` file
+- Change the `name` and `short_name` fields
+- Run `npm run build` to update the app
 
 ## 🔧 Project Structure
 
