@@ -65,7 +65,7 @@ NEXT_PUBLIC_PRIVY_CLIENT_ID=your_privy_client_id_here
 # Web Push Configuration (Required for notifications)
 NEXT_PUBLIC_VAPID_PUBLIC_KEY=your_vapid_public_key_here
 VAPID_PRIVATE_KEY=your_vapid_private_key_here
-VAPID_SUBJECT=mailto:your-email@example.com
+WEB_PUSH_EMAIL=mailto:your-email@example.com
 ```
 
 > **Important**: Replace all placeholder values with your actual credentials. See the steps below for obtaining these values.
@@ -83,7 +83,8 @@ Copy the generated keys to your `.env.local` file.
 ### 5. Get Privy App ID
 
 1. Visit [privy.io](https://privy.io) and create an account
-2. Create a new app and copy your App ID
+2. Create a new app, choose Web as the Platform and create the app
+3. Right after creating the app, copy the App ID
 3. Add the App ID to your `.env.local` file
 
 ## 🏃‍♂️ Running the Application
@@ -129,7 +130,7 @@ The app includes web push notification capabilities for user engagement and upda
 
 **❌ Push notifications failing:**
 - Confirm VAPID keys are properly generated and copied
-- Verify `VAPID_SUBJECT` email format: `mailto:your-email@example.com`
+- Verify `WEB_PUSH_EMAIL` email format: `mailto:your-email@example.com`
 - Ensure both public and private VAPID keys are set
 
 **❌ App won't start:**
