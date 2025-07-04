@@ -98,7 +98,7 @@ export default function UseLoginPrivy() {
     try {
       const result = await sendTransaction({
         to: userAddress,
-        value: 100000,
+        value: 1000000000000000,
       });
       
       setTransactionHash(result.hash);
