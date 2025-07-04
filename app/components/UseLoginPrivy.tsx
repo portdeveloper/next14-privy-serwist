@@ -18,6 +18,8 @@ export default function UseLoginPrivy() {
   const [balanceLoading, setBalanceLoading] = useState(false);
   const [balanceError, setBalanceError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [transactionHash, setTransactionHash] = useState<string | null>(null);
+  const [transactionStatus, setTransactionStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle');
   const { ready, user, logout } = usePrivy();
 
   const { createWallet: createEthereumWallet } = useCreateWallet();
@@ -88,10 +90,28 @@ export default function UseLoginPrivy() {
   }, [createEthereumWallet]);
 
   const onSendTransaction = async () => {
-    sendTransaction({
-      to: userAddress || "",
-      value: 100000,
-    });
+    if (!userAddress) return;
+    
+    setTransactionStatus('pending');
+    setTransactionHash(null);
+    
+    try {
+      const result = await sendTransaction({
+        to: userAddress,
+        value: 100000,
+      });
+      
+      setTransactionHash(result.hash);
+      setTransactionStatus('success');
+      
+      // Refresh balance after successful transaction
+      setTimeout(() => {
+        fetchBalance();
+      }, 3000);
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setTransactionStatus('error');
+    }
   };
 
   const { login } = useLogin();
@@ -253,15 +273,66 @@ export default function UseLoginPrivy() {
                 
                 <button
                   onClick={onSendTransaction}
-                  disabled={!hasEthereumWallet || !userAddress}
+                  disabled={!hasEthereumWallet || !userAddress || transactionStatus === 'pending'}
                   className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors duration-200 ${
-                    !hasEthereumWallet || !userAddress 
+                    !hasEthereumWallet || !userAddress || transactionStatus === 'pending'
                       ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed' 
                       : 'bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white shadow-md hover:shadow-lg'
                   }`}
                 >
-                  {!hasEthereumWallet ? "Please create a wallet first" : "Send 0.001 MON"}
+                  {!hasEthereumWallet ? "Please create a wallet first" : 
+                   transactionStatus === 'pending' ? "Sending..." : 
+                   "Send 0.001 MON"}
                 </button>
+
+                {/* Transaction Status */}
+                {transactionStatus !== 'idle' && (
+                  <div className="mt-4 space-y-2">
+                    {transactionStatus === 'pending' && (
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                        <div className="flex items-center">
+                          <div className="animate-spin mr-3 w-5 h-5 border-2 border-yellow-500 dark:border-yellow-400 border-t-transparent rounded-full"></div>
+                          <span className="text-yellow-800 dark:text-yellow-200 font-medium">Transaction pending...</span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {transactionStatus === 'success' && transactionHash && (
+                      <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center">
+                            <span className="text-green-800 dark:text-green-200 font-medium mr-2">✅ Transaction successful!</span>
+                          </div>
+                          <div className="flex items-center justify-between bg-green-100 dark:bg-green-800/30 rounded-lg p-3">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-1">Transaction Hash:</p>
+                              <p className="text-xs font-mono text-green-700 dark:text-green-300 break-all">{transactionHash}</p>
+                            </div>
+                          </div>
+                          <a
+                            href={`https://testnet.monadscan.com/tx/${transactionHash}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+                          >
+                            View on MonadScan
+                            <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {transactionStatus === 'error' && (
+                      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                        <div className="flex items-center">
+                          <span className="text-red-800 dark:text-red-200 font-medium">❌ Transaction failed. Please try again.</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
