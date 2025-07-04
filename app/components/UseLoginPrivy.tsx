@@ -253,14 +253,14 @@ export default function UseLoginPrivy() {
                 
                 <button
                   onClick={onSendTransaction}
-                  disabled={!userAddress}
+                  disabled={!hasEthereumWallet || !userAddress}
                   className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors duration-200 ${
-                    !userAddress 
+                    !hasEthereumWallet || !userAddress 
                       ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed' 
                       : 'bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white shadow-md hover:shadow-lg'
                   }`}
                 >
-                  Send 0.001 MON
+                  {!hasEthereumWallet ? "Please create a wallet first" : "Send 0.001 MON"}
                 </button>
               </div>
             </div>
