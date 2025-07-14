@@ -18,9 +18,6 @@ export const POST = async (req: NextRequest) => {
       process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
       process.env.WEB_PUSH_PRIVATE_KEY
     );
-    // 🔧 CUSTOMIZE YOUR NOTIFICATION CONTENT HERE
-    // Developers: Change the title, message, icon, and other properties below
-    // to customize your push notification content
     const response = await webPush.sendNotification(
       subscription,
       JSON.stringify({
