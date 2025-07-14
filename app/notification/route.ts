@@ -18,11 +18,22 @@ export const POST = async (req: NextRequest) => {
       process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
       process.env.WEB_PUSH_PRIVATE_KEY
     );
+    // 🔧 CUSTOMIZE YOUR NOTIFICATION CONTENT HERE
+    // Developers: Change the title, message, icon, and other properties below
+    // to customize your push notification content
     const response = await webPush.sendNotification(
       subscription,
       JSON.stringify({
-        title: "Hello Web Push",
-        message: "Your web push notification is here!",
+        title: "🚀 Test Notification",
+        message: "This is a sample push notification. Customize this content in app/notification/route.ts",
+        icon: "/icon-192x192.png",
+        badge: "/icon-192x192.png",
+        actions: [
+          {
+            action: "open",
+            title: "Open App"
+          }
+        ]
       })
     );
     return new NextResponse(response.body, {
