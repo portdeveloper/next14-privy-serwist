@@ -198,6 +198,30 @@ next14-privy-serwist/
 └── ...
 ```
 
+## 🎨 Modifying the App Icon & Splash Screen
+
+### App Icons
+
+Replace the icon files in the `public/icons/` directory with your custom icons:
+
+- **`icon-512x512.png`** - Main app icon (512×512px)
+- **`android-chrome-192x192.png`** - Android icon (192×192px)  
+- **`apple-touch-icon.png`** - iOS home screen icon (180×180px)
+
+Also update the favicon:
+- **`public/favicon.ico`** - Browser favicon
+- **`app/favicon.ico`** - Next.js app favicon
+
+### Splash Screen
+
+Splash screens are automatically generated from your app icon and theme colors defined in `manifest.json`. To customize:
+
+1. Update the `theme_color` and `background_color` in `public/manifest.json`
+2. Ensure your main icon (`icon-512x512.png`) represents your brand
+3. Run `npm run build` to apply changes
+
+> **Tip**: Use tools like [PWA Asset Generator](https://www.pwabuilder.com/imageGenerator) to create all required icon sizes from a single source image.
+
 ## 🔗 Key Components
 
 - **UseLoginPrivy**: Privy authentication integration
