@@ -25,7 +25,6 @@ A modern, full-stack Progressive Web Application built with Next.js 14, featurin
 Before you begin, ensure you have the following installed:
 
 - Node.js (v18 or higher)
-- npm or yarn
 - A Privy account and App ID from [privy.io](https://privy.io)
 
 ## 🚀 Quick Start
